@@ -73,9 +73,11 @@ class Scanner {
                     match('=') ? TokenType.GREATER_EQUAL : TokenType.GREATER);
             case '/' -> {
                 if (match('/')) {
-                    // A comment goes until the end of the line.
+                    // A single line comment goes until the end of the line.
                     while (peek() != '\n' && !isAtEnd())
                         advance();
+                } else if (match('*')) {
+                    multilineComment();
                 } else {
                     addToken(TokenType.SLASH);
                 }
@@ -144,6 +146,29 @@ class Scanner {
             type = TokenType.IDENTIFIER;
 
         addToken(type);
+    }
+
+    private void multilineComment() {
+        // A multi-line comment
+        while (!isAtEnd()) {
+            if (peek() == '\n') {
+                line++;
+                advance();
+            } else if (peek() == '/' && peekNext() == '*') {
+                advance();
+                advance();
+
+                multilineComment();
+            } else if (peek() == '*' && peekNext() == '/') {
+                advance();
+                advance();
+
+                return;
+            } else
+                advance();
+        }
+
+        Lox.error(line, "Unclosed multiline comment.");
     }
 
     private char advance() {
