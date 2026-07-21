@@ -71,6 +71,8 @@ class Scanner {
                     match('=') ? TokenType.LESS_EQUAL : TokenType.LESS);
             case '>' -> addToken(
                     match('=') ? TokenType.GREATER_EQUAL : TokenType.GREATER);
+            case '?' -> addToken(TokenType.QUESTION);
+            case ':' -> addToken(TokenType.COLON);
             case '/' -> {
                 if (match('/')) {
                     // A single line comment goes until the end of the line.
