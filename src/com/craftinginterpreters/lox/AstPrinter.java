@@ -44,6 +44,11 @@ public class AstPrinter implements Expr.Visitor<String> {
     }
 
     @Override
+    public String visitTernaryExpr(Expr.Ternary expr) {
+        return parenthesize("ternary", expr.condition, expr.thenBranch, expr.elseBranch);
+    }
+
+    @Override
     public String visitBinaryExpr(Expr.Binary expr) {
         return parenthesize(expr.operator.lexeme,
                 expr.left, expr.right);
@@ -70,7 +75,6 @@ public class AstPrinter implements Expr.Visitor<String> {
         StringBuilder builder = new StringBuilder();
 
         if (currentParType == ParType.normal) {
-
             builder.append("(").append(name);
             for (Expr expr : exprs) {
                 builder.append(" ").append(expr.accept(this));
