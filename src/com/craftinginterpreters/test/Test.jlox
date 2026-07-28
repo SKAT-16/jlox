@@ -1,6 +1,32 @@
-/*
-This is a multiline comment
+// Lox - Tree-walk interpreter demo
 
+class Animal {
+  init(name) {
+    this.name = name;
+  }
 
-*/
-number2
+  speak() {
+    print this.name + " makes a sound.";
+  }
+}
+
+class Dog < Animal {
+  speak() {
+    super.speak();
+    print this.name + " says: Woof!";
+  }
+}
+
+fun createGreeter(message) {
+  fun greet(name) {
+    print message + ", " + name + "!";
+  }
+
+  return greet;
+}
+
+var dog = Dog("Buddy");
+dog.speak();
+
+var hello = createGreeter("Hello");
+hello("Lox");
